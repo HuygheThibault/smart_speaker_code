@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block main %}
+{#    <script src="/static/Chart.bundle.min.js"></script>#}
+        <canvas id="myChart" style="margin: auto"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+            data: {
+                labels:  [
+                    {% for data in decibels %}
+                        "{{ data[1] }}",
+                    {% endfor %}
+                         ],
+                datasets: [
+                        {
+                            label: "Decibel",
+                            fill: false,
+                                data:[
+                                    {% for data in decibels %}
+                                        {{ data[2] }},
+                                    {% endfor %}
+                                ],
+                            backgroundColor: "{{ Colors[0] }}",
+                            bordercolor:"{{ Colors[0] }}",
+                            pointBorderColor: "{{ Colors[0] }}",
+                            pointRadius: 5,
+                            pointHoverRadius: 15,
+                            pointHitRadius: 30,
+                            pointBorderWidth: 2,
+                            pointStyle: 'rect'
+                        },
+                        {
+                            label: "LDR",
+                             fill: false,
+                                data:[{% for data in LDR %}
+                                     {{ data[2] }},
+                            {% endfor %}],
+                            backgroundColor: "{{ Colors[1] }}",
+                            bordercolor:"{{ Colors[1] }}",
+                            pointBorderColor: "{{ Colors[1] }}",
+                            pointRadius: 5,
+                            pointHoverRadius: 15,
+                            pointHitRadius: 30,
+                            pointBorderWidth: 2,
+                            pointStyle: 'rect'
+                        },
+                ]
+            },
+
+            options: {
+                legend: {
+                  position:"top"
+                },
+                responsive: false,
+                title: {
+                    display: false,
+                    text: 'Chart of the sensors'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Moment',
+                        },
+                        ticks: {
+                            autoSkip: false
+                            {#maxRotation: 80,#}
+                            {#minRotation: 80#}
+                }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                }
+            }
+        });
+</script>
+{% endblock %}

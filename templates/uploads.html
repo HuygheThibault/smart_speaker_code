@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block main %}
+    <div class="container">
+            <div class="music-player">
+                <div class="cover">
+                    <img src="../static/images/songs/{{ image }}" alt={{ image }} class="song_image">   
+                </div>
+                <div class="titre">
+                    <div class="artist">{{ artist }}</div>
+                    <div class="title">{{ title }}</div>
+                </div>
+                <div class="lecteur">
+                    <audio src="../static/songs/{{ path }}" preload="auto" autoplay controls>
+                    </audio>
+                    <div class="mejs__controls">
+                        <div class="mejs__button mejs__playpause-button mejs__play">
+                            <button id="play" type="button" aria-controls="mep_0" title="play" aria-label="play" tabindex="0"></button>
+                        </div>
+                        <div class="mejs__time" role="timer" aria-live="off">
+                            <span class="mejs__currenttime">00:00</span>
+                            <span></span>
+                            <span class="mejs__duration">00:00</span>
+                        </div>
+                        <div class="mejs__time-rail">
+                            <span class="mejs__time mejs__time-current ">
+                            </span>
+                        </div>
+                        <div class="mejs__button mejs__volume-button mejs__mute">
+                            <button type="button" aria-controls="mep_0" title="Mute" aria-label="Mute" tabindex="0"></button>
+                        </div>
+                        <a class="mejs__horizontal-volume-slider" href="../static/js/music_player.js" aria-label="Volume Slider"
+                           aria-valuemin="0" aria-valuemax="100" role="slider"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      init();
+    });
+
+function init() {
+    slider_song_length = document.querySelector('#slider_song_length');
+    slider_song();
+    controls();
+    content();
+    }
+
+    function content() {
+        img_cookie = getCookie("image");
+        artist_cookie = getCookie("artist");
+        artist_cookie = String(artist_cookie).substring(0,25);
+        title_cookie = getCookie("title");
+        title_cookie = String(title_cookie.substring(0,20));
+        img = document.querySelector("#image");
+        title = document.querySelector("#title");
+        artist= document.querySelector("#artist");
+
+        img.setAttribute("src", "/static/images/songs/" + img_cookie);
+        title.innerHTML = title_cookie.replace('\"','').replace('\"',"");
+        artist.innerHTML = artist_cookie.replace('\"',"").replace('\"',"");
+    }
+
+    function slider_song (){
+        var max_lengte = getCookie('length');
+        var current_length = getCookie('current length');
+        slider_song_length.addEventListener("input", function(){
+          value_of_slider(slider_song_length);
+        });
+
+        slider_song_length.setAttribute('max',(parseInt(max_lengte.replace(":",""),10)/100));
+        slider_song_length.setAttribute('value',(current_length));
+        end_length = document.querySelector('#end_length').innerHTML = max_lengte;
+        start_length = document.querySelector('#start_length').innerHTML = (parseFloat(Math.round(current_length * 100) / 100).toFixed(2)).replace(".",":");
+    }
+
+    function min_sec(time) {
+        var sec = Math.ceil((time*100)%60)/100;
+        var min = parseInt((Math.floor(time*100)/60),10);
+        return (min+sec).toFixed(2)
+    }
+
+    function value_of_slider(id) {
+        start_length = document.querySelector('#start_length').innerHTML = (id.value);
+        setCookie('current length', start_length, 1)
+    }
+
+    function controls () {
+        forward = document.querySelector('#forward');
+        rewind = document.querySelector('#rewind');
+        play = document.querySelector('#play');
+        forward.addEventListener('click', function () {
+            print();
+        });
+        rewind.addEventListener('click', function () {
+            print();
+        });
+        play.addEventListener('click', function () {
+            print();
+        });
+    }
+
+    function print() {
+        console.info("test");
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+</script>

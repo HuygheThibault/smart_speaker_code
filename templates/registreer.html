@@ -1,0 +1,21 @@
+{% extends "base_login.html" %}
+{% block main %}
+    <div class="box" style="left: calc(57% - 165px);top: 10%;">
+
+     <div class="box-screen">
+        <div class="login-buttons">
+            <button onclick=window.location.href='/login/'>Login</button>
+            <button id="focus-button" onclick=window.location.href='/registreer/'>register</button>
+        </div>
+
+        <h2>Welcome. <span>please register.</span></h2>
+        <form class="form-signin" method="post">
+            <input type="text" name="username" placeholder="username" required>
+            <input type="password" name="password" placeholder="password" required>
+            <input type="submit" value="Log in"/>
+            {% if Error %}
+                <h2>Error! foutieve data</h2>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

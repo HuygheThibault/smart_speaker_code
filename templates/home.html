@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block main %}
+    <script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("search");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("song_table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+    <div class="container">
+    <input type="text" id="search" onkeyup="myFunction()" placeholder="Search" title="search for a song">
+        <table align="center" id="song_table">
+            <th>Play</th>
+            {% for titel in titels %}
+                <th>{{ titel[0] }}</th>
+            {% endfor %}
+            {% for song in songs %}
+                <tr>
+{#                    <td><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></td>#}
+                    <td><a href="http://127.0.0.1:5000/uploads/{{ song[0] }}"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></a></td>
+                {% for item in song %}
+                    <td>{{ item }}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

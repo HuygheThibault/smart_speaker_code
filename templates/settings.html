@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block main %}
+<div>
+        <div class="setting_button">
+            <button id="reset"  style="float:left; margin-left: 15%;" >Reset</button>
+            <button id="save" style="float:right; margin-right: 15%;" >Save</button>
+        </div>
+    <form id="settings">
+          <div class="range-slider">
+            <input type="range" id="decibel" class="vertical" min="0" max="100" step="1" value="50">
+            <span class="scope scope-min"></span>
+              <span class="scope" id="decibel-value">50</span>
+              <div class="option_logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+                <div>Decibel</div>
+            </div>
+          </div>
+        <div class="range-slider">
+            <input type="range" id="intensity" class="vertical" min="0" max="100" step="1" value="50">
+            <span class="scope scope-min"></span>
+            <span class="scope" id="intensity-value">50</span>
+          <div class="option_logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/>
+                </svg>
+                <div>Intensity</div>
+            </div>
+        </div>
+        <div class="range-slider ">
+            <input type="range" id="color" class="vertical" min="1" max="4" step="1" value="1">
+            <span class="scope scope-min"></span>
+              <span class="scope" id="color-value">50</span>
+              <div class="option_logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z"/>
+                </svg>
+                <div>Color picker</div>
+            </div>
+          </div>
+    </form>
+
+</div>
+</div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      init_settings();
+    });
+
+function init_settings() {
+    settings();
+    }
+
+    function settings() {
+        decibel = document.querySelector("#decibel");
+        intensity = document.querySelector("#intensity");
+        color= document.querySelector("#color");
+        {#buttons#}
+        save=document.querySelector("#save");
+        reset=document.querySelector("#reset");
+
+        {#values from cookies and fill range#}
+        decibel_value=document.querySelector("#decibel-value");
+        decibel_value.innerHTML=getCookie(getCookie("user")+"/Decibel");
+        decibel.setAttribute("value",getCookie(getCookie("user")+"/Decibel"));
+
+
+        intensity_value=document.querySelector("#intensity-value");
+        intensity_value.innerHTML=getCookie(getCookie("user")+"/Intensity");
+        intensity.setAttribute("value",getCookie(getCookie("user")+"/Intensity"));
+
+        color_value=document.querySelector("#color-value");
+        color_value.innerHTML=getCookie(getCookie("user")+"/Color");
+        color.setAttribute("value",getCookie(getCookie("user")+"/Color"));
+
+
+        decibel.addEventListener('input',function(){
+          show_input(decibel, decibel_value);
+        });
+        intensity.addEventListener('input',function(){
+          show_input(intensity, intensity_value);
+        });
+        color.addEventListener('input',function(){
+          show_input(color, color_value);
+        });
+        save.addEventListener('click',function(){
+          save_input();
+        });
+        reset.addEventListener('click',function(){
+          reset_input();
+        });
+    }
+
+    function show_input(id, inner) {
+        inner.innerHTML = id.value;
+        id.setAttribute("value",id.value);
+    }
+
+    function save_input() {
+        setCookie(getCookie("user")+ "/Decibel", decibel.value, 10);
+        setCookie(getCookie("user")+ "/Intensity", intensity.value, 10);
+        setCookie(getCookie("user")+"/Color", color.value, 10);
+        setCookie(getCookie("user")+"/Color", color.value, 10);
+    }
+
+    function reset_input() {
+        setCookie(getCookie("user")+"/Decibel", 50, 10);
+        setCookie(getCookie("user")+"/Intensity", 50, 10);
+        setCookie(getCookie("user")+"/Color", 1, 10);
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+</script>
+{% endblock %}

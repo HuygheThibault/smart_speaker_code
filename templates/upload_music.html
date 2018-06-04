@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block main %}
+    <div class="box-upload">
+        <div class="box-screen-upload">
+            <form method='POST' enctype=multipart/form-data>
+                <div id="upload"> <div class="center-text">upload</div></div>
+                <label for="file" class="upload-label"><div class="center-text">Upload a song</div></label>
+                <input id="file" type="file" name="file" accept="audio/*" class="input-file" multiple required>
+                <p></p>
+                <input id="title" type="text" name="title" placeholder="Title">
+                <p></p>
+                <input id="artist" type="text" name="artist" placeholder="Artist">
+                <p></p>
+                <label for="image" class="upload-label"><div class="center-text">Upload an image</div></label>
+                <input id="image" type="file" name="image" accept="image/*" class="input-file" multiple required>
+                <input type=submit value=Upload>
+            </form>
+        </div>
+    </div>
+{% endblock %}
